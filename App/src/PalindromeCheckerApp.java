@@ -5,15 +5,13 @@ public class PalindromeCheckerApp {
         Scanner scnr=new Scanner(System.in);
         System.out.print("Input text:");
         String str=scnr.nextLine();
-        Queue<Character> queue = new LinkedList<>();
-        Stack<Character> stack = new Stack<>();
+        Deque<Character> deque = new ArrayDeque<>();
         for (char c : str.toCharArray()) {
-            queue.add(c);     // FIFO
-            stack.push(c);    // LIFO
+            deque.addLast(c);
         }
         boolean isPalin=true;
-        while (!queue.isEmpty()) {
-            if (!queue.remove().equals(stack.pop())) {
+        while (deque.size() > 1) {
+            if (!deque.removeFirst().equals(deque.removeLast())) {
                 isPalin = false;
                 break;
             }
