@@ -5,14 +5,13 @@ public class PalindromeCheckerApp {
         Scanner scnr=new Scanner(System.in);
         System.out.print("Input text:");
         String str=scnr.nextLine();
-        int a=0;
-        for(int i=0;i<str.length()/2; i++)
+        String a="";
+        for(int i=str.length()-1;i>=0; i--)
         {
-            if(str.charAt(i)==str.charAt(str.length()-i-1))
-                a++;
+            a+=str.charAt(i);
         }
         System.out.print("\nIs it a palindrome? :");
-        if(a>=str.length()/2)
+        if(a.equals(str))
             System.out.println(" true");
         else
             System.out.println(" false");
