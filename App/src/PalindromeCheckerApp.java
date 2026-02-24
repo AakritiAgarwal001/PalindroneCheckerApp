@@ -5,15 +5,17 @@ public class PalindromeCheckerApp {
         Scanner scnr=new Scanner(System.in);
         System.out.print("Input text:");
         String str=scnr.nextLine();
-        String a="";
-        for(int i=str.length()-1;i>=0; i--)
+        char c[]=str.toCharArray();
+        int start=0;
+        int end=c.length-1;
+        boolean isPalin=true;
+        while(start<end)
         {
-            a+=str.charAt(i);
+            if(c[start]!=c[end])
+                isPalin=false;
+            start++;
+            end--;
         }
-        System.out.print("\nIs it a palindrome? :");
-        if(a.equals(str))
-            System.out.println(" true");
-        else
-            System.out.println(" false");
+        System.out.print("\nIs it a palindrome? :"+isPalin);
     }
 }
