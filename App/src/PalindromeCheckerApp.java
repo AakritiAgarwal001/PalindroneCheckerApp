@@ -2,29 +2,32 @@ import java.util.Scanner;
 import java.util.Stack;
 import java.util.ArrayDeque;
 import java.util.Deque;
-interface PalindromeStrategy {
-    boolean checkPalindrome(String input);
-}
-class StackStrategy implements PalindromeStrategy {
-    public boolean checkPalindrome(String input) {
-        String normalized = input.replaceAll("\\s+", "").toLowerCase();
-        Stack<Character> stack = new Stack<>();
-        for (int i = 0; i < normalized.length(); i++) {
-            stack.push(normalized.charAt(i));
-        }
-        String reversed = "";
-        while (!stack.isEmpty()) {
-            reversed += stack.pop();
-        }
-        return normalized.equals(reversed);
+public class PalindromeCheckerApp {
+    public static String normalize(String input) {
+        return input.replaceAll("\\s+", "").toLowerCase();
     }
-}
-class DequeStrategy implements PalindromeStrategy {
-    public boolean checkPalindrome(String input) {
-        String normalized = input.replaceAll("\\s+", "").toLowerCase();
+    public static boolean checkUsingReverse(String input) {
+        String str = normalize(input);
+        String reversed = new StringBuilder(str).reverse().toString();
+        return str.equals(reversed);
+    }
+    public static boolean checkUsingStack(String input) {
+        String str = normalize(input);
+        Stack<Character> stack = new Stack<>();
+        for (int i = 0; i < str.length(); i++) {
+            stack.push(str.charAt(i));
+        }
+        StringBuilder reversed = new StringBuilder();
+        while (!stack.isEmpty()) {
+            reversed.append(stack.pop());
+        }
+        return str.equals(reversed.toString());
+    }
+    public static boolean checkUsingDeque(String input) {
+        String str = normalize(input);
         Deque<Character> deque = new ArrayDeque<>();
-        for (int i = 0; i < normalized.length(); i++) {
-            deque.add(normalized.charAt(i));
+        for (int i = 0; i < str.length(); i++) {
+            deque.add(str.charAt(i));
         }
         while (deque.size() > 1) {
             if (deque.removeFirst() != deque.removeLast()) {
@@ -33,38 +36,23 @@ class DequeStrategy implements PalindromeStrategy {
         }
         return true;
     }
-}
-class PalindromeCheckerService {
-    private PalindromeStrategy strategy;
-    public PalindromeCheckerService(PalindromeStrategy strategy) {
-        this.strategy = strategy;
-    }
-    public boolean execute(String input) {
-        return strategy.checkPalindrome(input);
-    }
-}
-public class UseCase12PalindromeCheckerApp {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter a string:");
         String input = sc.nextLine();
-        System.out.println("Choose Strategy:");
-        System.out.println("1. Stack Strategy");
-        System.out.println("2. Deque Strategy");
-        int choice = sc.nextInt();
-        PalindromeStrategy strategy;
-        if (choice == 1) {
-            strategy = new StackStrategy();
-        } else {
-            strategy = new DequeStrategy();
-        }
-        PalindromeCheckerService service = new PalindromeCheckerService(strategy);
-        boolean result = service.execute(input);
-        if (result) {
-            System.out.println("The given string is a Palindrome.");
-        } else {
-            System.out.println("The given string is NOT a Palindrome.");
-        }
+        long start1 = System.nanoTime();
+        boolean result1 = checkUsingReverse(input);
+        long end1 = System.nanoTime();
+        long start2 = System.nanoTime();
+        boolean result2 = checkUsingStack(input);
+        long end2 = System.nanoTime();
+        long start3 = System.nanoTime();
+        boolean result3 = checkUsingDeque(input);
+        long end3 = System.nanoTime();
+        System.out.println("Palindrome Check Results:");
+        System.out.println("Reverse Method: " + result1 + " | Time: " + (end1 - start1) + " ns");
+        System.out.println("Stack Method: " + result2 + " | Time: " + (end2 - start2) + " ns");
+        System.out.println("Deque Method: " + result3 + " | Time: " + (end3 - start3) + " ns");
         sc.close();
     }
 }
